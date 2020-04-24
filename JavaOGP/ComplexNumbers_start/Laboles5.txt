@@ -1,0 +1,110 @@
+#les over reguliere expressies
+
+while(<>) {
+	m<	[aeiou]	#we gaan zoeken naar klinkers
+
+	#hier mag commentaar staan door x
+
+	>ximagce 
+	#de m en wat tussen de haakjes staat duid op een reguliere expressie 
+	#de i in ximagce staat voor case insensitive
+	#de x staat voor dat de whitespace word genegeerd en je commentaar in je regueliere expressie mag staan (gebruik \# om het haakje wel te gebruiken in je code)
+	#de m 
+	#de a
+	#de g
+
+	print;
+}
+
+#deze zal alle woorden met meer dan 1 klinker na elkaar apart zetten
+
+while(<>){
+	if ($_=~m<([aeiou])\1/i {
+		print $_;
+	}
+}
+
+__DATA__
+
+#geen idee wat dit allemaal doet
+
+while(<>){
+	if (/(\w*([aeiou])\2\w*)/i) {
+		print "$2 $1: $_";
+	}
+}
+
+___DATA___
+
+#nog iets
+
+while(<>){
+	@T=($_=~m/(\w*([aeiou])\2\w*)/i);
+	if (@T){
+		print "$T[1] $T[0]: $_";
+	}
+}
+
+__DATA__
+
+#deze kan ook als dit:
+
+while(<>){
+	@T= /(\w*([aeiou])\2\w*)/i);
+	if (@T){
+		print "$T[1] $T[0]: $_";
+	}
+}
+
+__DATA__
+
+
+#verdere uitleg van parameters
+
+undef $/;
+$_=<DATA>
+if (/$^(F.*,\.)/sm) { #De m modifier wordt gebruikt zodat hij het opnieuw doet en niet gewoon begin van de string neemt maar van de lijn
+			#de s modifier ziet een punt als een willekeurig teken ookal is het een lijnscheidingsteken
+	print "$1\n";
+}
+
+__DATA__
+
+#Deelstring zoeken in een stuk tekst, wanneer gevonden je pointer er laten staan tot je weer een hebt gevonden
+
+undef $/;
+$_=<DATA>;
+while(/^(F.*?\.)/gcsm) {
+	$x++;
+	print "\n($x) $1\n";
+}
+/^(.*?\.)/gsm;
+print $1;
+
+__DATA__
+
+#hij point terug naar het begin omdat hij zoekt tot hij het niet meer vind en dan terug naar het begin gaat daarom zetten we er 'c' bij als modifier want die laat ook na
+#een negatieve evaluatie de pointer staan
+#Zelf of het examen kijken of je best lijn per lijn leest of best volledige string doet
+
+undef $/;
+$_=<DATA>
+@T=($_=~m/(^F.*?\.)/gcsm);	#@T=/(^F.*?\.)/gcsm
+scalar @T;
+print $T[-1];
+
+__DATA__
+
+
+#nog een oef
+
+$_="een\t:1\ntwee\t:2\ndrie\t:3\nvier\t:4\nvijf\t:5\nzes\t:6\n";
+print;
+
+s/^(.*?)\t:(.*?)$/$2\t:$1/igcsmx;
+print;
+
+s/^(.*?\t:)(\d+)$/$1.(2*$2)/igcsmxe; #modifier e: ????
+
+s/([aeiou])\$H{$1}++;$1/ge;
+print map {"$_:\t$H{$_}\n"} keys %H; #dit moet je zelf niet kunnen
